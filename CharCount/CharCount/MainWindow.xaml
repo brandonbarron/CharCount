@@ -1,5 +1,4 @@
-﻿
-    <Controls:MetroWindow x:Class="CharCount.MainWindow"
+﻿<Controls:MetroWindow x:Class="CharCount.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,31 +6,46 @@
         xmlns:local="clr-namespace:CharCount"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="CharCount" Height="350" Width="525">
-    <Grid>
-        <Controls:MetroTabControl>
-            <TabControl.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Path=TabTitle}"/>
-                </DataTemplate>
-            </TabControl.ItemTemplate>
-            <TabControl.ContentTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="5*"/>
-                            <RowDefinition Height="5*"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <TextBlock Text="Enter words below."/>
-                        </Grid>
-                        <Grid Grid.Row="0" >
-                            <TextBox Text="{Binding Path=EnteredText}" Width="auto" Height="auto"/>
-                        </Grid>
-                    </Grid>
-                </DataTemplate>
-            </TabControl.ContentTemplate>
-        </Controls:MetroTabControl>
+                      BorderBrush="{DynamicResource AccentColorBrush}"
+                      BorderThickness="2"
+        Title="CharCount" Height="500" Width="525">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="2">
+            <TextBlock Text="Enter words below."/>
+        </Grid>
+        <Grid Grid.Row="1" Margin="2">
+            <TextBox Text="{Binding EnteredText, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" />
+        </Grid>
+        <Grid Grid.Row="2" Margin="2">
+            <DataGrid x:Name="CharGrid" ItemsSource="{Binding Path=CharCountView.View, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Char" Binding="{Binding TheChar}"/>
+                    <DataGridTextColumn Header="Count" Binding="{Binding TheCount}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="AutoUpdate" Grid.Column="0" VerticalAlignment="Center"/>
+                <CheckBox Grid.Column="1" IsChecked="{Binding Path=IsAutoUpdate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Button HorizontalAlignment="Right" Content="Update" Command="{Binding UpdateCommand}" CommandParameter="{Binding EnteredText}"/>
+            </Grid>
+        </Grid>
     </Grid>
 </Controls:MetroWindow>
